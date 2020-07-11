@@ -31,7 +31,8 @@ export default {
                     require('../assets/par.png')
                 ],
                 timer: null,
-                resultMessage: ''
+                resultMessage: '',
+                score:''
             }
   },
   methods:{
@@ -53,24 +54,26 @@ export default {
                     btn.removeAttribute('disabled');
                 }
       },
-      onSelected() {
+      onSelected(e) {
           clearInterval(this.timer)
           let btns = document.querySelectorAll('.button');
                 for( let btn of btns ) {
                     btn.setAttribute('disabled', true);
                 }
           document.getElementById('gameStart').removeAttribute('disabled')
-          //let button = e.target
-          //window.console.log(this.src)
-          //let resultNum = parseInt(this.imgList.indexOf(this.src), 10)
-          //let selectNum = parseInt(button.value, 10) /* 第一引数に渡した値を10進数に変換して返す */
-          //let kekkaNum = this.decisionJanken(selectNum, resultNum)
+        
+          let button = e.target
+          window.console.log(this.src)
+          let resultNum = parseInt(this.imgList.indexOf(this.src), 10)
+          let selectNum = parseInt(button.value, 10) /* 第一引数に渡した値を10進数に変換して返す */
+          let kekkaNum = this.decisionJanken(selectNum, resultNum)
+          this.$store.commit('onSelected',kekkaNum)
+          console.log(kekkaNum)
 
-          //window.console.log('勝ち負け(0 は負け, 1は勝ち,2は引き分け)→' + this.decisionJanken(selectNum, resultNum))
       },
       decisionJanken(myHand, cpuHand) {
                 let result = 0; // 0 は負け, 1は勝ち,2は引き分け
- 
+                
                 switch(myHand) {
                     case 0://自分がぐー(0)のとき
                     if(cpuHand===0){
@@ -100,7 +103,13 @@ export default {
                     }
                 }
                 return result;
-            }
+                
+            },
+//             computed:{
+//     score(){
+//       return this.$store.getters.score
+//     }
+//   },
   }
 }
 </script>
